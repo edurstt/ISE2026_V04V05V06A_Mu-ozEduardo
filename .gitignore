@@ -1,0 +1,35 @@
+# ==========================================
+# .gitignore para proyectos Keil uVision 5
+# ==========================================
+
+# 1. Carpetas de compilación y salida por defecto
+Objects/
+Listings/
+DebugConfig/
+
+# 2. Archivos intermedios y binarios de compilación
+*.o
+*.d
+*.crf
+*.elf
+*.axf
+*.hex
+*.bin
+*.map
+*.htm
+*.lnp
+*.dep
+*.bak
+*.build_log.htm
+
+# 3. Configuraciones locales de usuario (¡Crucial ignorarlos!)
+*.uvguix.*
+*.uvoptx
+
+# 4. Logs e historiales de depuración
+JLinkLog.txt
+*.log
+
+# 5. Archivos temporales del sistema operativo
+.DS_Store
+Thumbs.db
