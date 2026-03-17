@@ -16,7 +16,6 @@ DebugConfig/
 *.hex
 *.bin
 *.map
-*.htm
 *.lnp
 *.dep
 *.bak
