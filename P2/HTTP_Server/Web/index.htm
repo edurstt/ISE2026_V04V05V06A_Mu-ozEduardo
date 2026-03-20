@@ -1,60 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
-<title>Web Server Demo</title>
-</head>
+    <meta charset="ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISE - ETSIST Control Panel</title>
+    <style>
+        :root {
+            --primary: #003d7c; /* Azul corporativo UPM */
+            --secondary: #f4f4f4;
+            --accent: #e0001a;  /* Rojo detalle */
+            --text: #222;
+        }
 
-<body bgColor=#ffffff leftMargin=0 topMargin=10 marginwidth="0" marginheight="0">
-<div align=center style="width: 833; height: 470">
-<table style="border: 1px solid #000080" height=384 cellSpacing=0 cellPadding=0 width="815">
- <tbody>
-  <tr bgColor=#EEEEEE>
-   <td style="border-bottom: 1px solid #000080" vAlign=bottom noWrap height=70 margin=50 width="567">
-    <h2 align="center"><font face="verdana" color="#006699">Embedded Development Tools</font></h2>
-   </td>
-   <td style="border-bottom: 1px solid #000080" vAlign=center noWrap height=73 width="240">
-    <a href="http://www.keil.com"><img border="0" src="keil.gif" align="left" width="151" height="47"></a>
-   </td>
-  </tr>
-  <tr>
-   <td colSpan=5 height=400 width="805" background="llblue.jpg" style="background-repeat: repeat-y;">
-    <div align=center>
-    <center>
-     <table width="90%" border=0>
-      <tbody>
-       <tr>
-        <td width="95%">
-         <h2 align="center"><br>
-         <b><font face="verdana" color=#003366>Keil Embedded WEB Server Example for </font></b></h2>
-         <p align="center">
-          <a target="_blank" href="http://www.keil.com/dd/chip/6104.htm">
-          <img border="0" src="logo.gif"></a></p>
-          <center>
-          <table width="797" height="94" border="0" cellpadding="0" cellspacing="0"><tr><td align="center">
-          <font face="Verdana"><b> [
-           <a href="/network.cgi">Network</a>   |
-           <a href="/system.cgi">System</a>     |
-           <a href="/leds.cgi">LED</a>          |
-           <a href="/lcd.cgi">LCD</a>           |
-           <a href="/ad.cgi">AD</a>             |
-           <a href="/rtc.cgi">RTC</a>           |
-           <a href="/buttons.cgi">Button</a>    |
-           <a href="/language.cgi">Language</a> |
-           <a href="/tcp.cgi">Statistics</a> ]</b></font>
-        </td></tr></table>
-       <p><font face="Verdana" size="2">These web pages are served from a Web server,<br>
-        which is part of a <a href="http://www.keil.com/pack/doc/mw/Network/html/index.html" target="_blank">
-        <b>Network Component</b></a> in <a href="http://www2.keil.com/mdk5/" target="_blank">
-        <b>MDK-Professional</b></a>.
-       </font></p>
-      </center>
-     </td>
-    </tr></tbody></table></center>
-   </div></td></tr>
- <tr>
-  <td colSpan=5 height=20 width="805" background="llblue.jpg" style="background-repeat: repeat-y;">
-   <p align=center><font face="Verdana" size="1"><a href="http://www.keil.com/company/copyright.asp">
-    Copyright</a> © 2004-2014 <a href="http://www.keil.com/company/">KEIL - An ARM Company</a> 
-    All rights reserved.</font></p>
-  </td>
- </tr></tbody></table>
-</div></body>
+        body { 
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif; 
+            background-color: var(--secondary); 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            color: var(--text);
+        }
+
+        header { 
+            background: var(--primary); 
+            width: 100%; 
+            color: white; 
+            padding: 30px 0; 
+            text-align: center; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        header h1 { margin: 0; font-size: 2.2em; text-transform: uppercase; letter-spacing: 2px; }
+        header p { margin: 5px 0 0; opacity: 0.9; font-weight: 300; }
+
+        .container { 
+            max-width: 850px; 
+            width: 92%; 
+            background: white; 
+            margin: -20px auto 30px; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            position: relative;
+        }
+
+        h2 { color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 25px; }
+
+        /* Grid de botones estilo Dashboard */
+        .nav-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+            gap: 20px; 
+            margin: 35px 0;
+        }
+
+        .nav-grid a { 
+            text-decoration: none; 
+            background: #fff; 
+            color: var(--primary); 
+            padding: 25px 15px; 
+            border-radius: 8px; 
+            text-align: center; 
+            font-weight: bold;
+            border: 2px solid var(--primary);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 60px;
+        }
+
+        .nav-grid a:hover { 
+            background: var(--primary); 
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,61,124,0.2);
+        }
+
+        .info-card {
+            background: #eef6ff;
+            padding: 20px;
+            border-left: 5px solid var(--primary);
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+
+        footer { 
+            margin-bottom: 30px; 
+            text-align: center;
+            font-size: 0.85em; 
+            color: #777; 
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>ISE <span style="font-weight:100">|</span> ETSIST</h1>
+    <p>ISE 2026</p>
+</header>
+
+<div class="container">
+    <h2>Panel de Gesti&oacute;n STM32F429</h2>
+    <p>Interfaz Web de monitorizaci&oacute;n en tiempo real para las pr&aacute;cticas de laboratorio de la ETSIST - Campus Sur.</p>
+
+    <div class="nav-grid">
+        <a href="/network.cgi">Config. RED</a>
+        <a href="/rtc.cgi">Reloj RTC</a>
+        <a href="/ad.cgi">Sensores AD</a>
+        <a href="/leds.cgi">Control LEDs</a>
+        <a href="/lcd.cgi">Pantalla LCD</a>
+        <a href="/system.cgi">Estado Sistema</a>
+        <a href="/buttons.cgi">Pulsadores</a>
+        <a href="/tcp.cgi">Estad&iacute;sticas</a>
+    </div>
+
+    <div class="info-card">
+        <strong>Hardware:</strong> STM32F429ZI (NUCLEO-144)
+
+        <strong>Middleware:</strong> Keil Network Component v7.x
+
+        <strong>Servicio:</strong> HTTP Server Embebido
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 ETSIST - Universidad Polit&eacute;cnica de Madrid
+
+    Grado en Ingenier&iacute;a de Sistemas de Telecomunicaci&oacute;n
+</footer>
+
+</body>
 </html>

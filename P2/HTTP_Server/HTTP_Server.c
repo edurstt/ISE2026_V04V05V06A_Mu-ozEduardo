@@ -125,20 +125,25 @@ __NO_RETURN void app_main (void *arg)
     (void)arg;
 
     ADC_init();
-
-    netInitialize();
-
-    /* Esperar 5 s a que la red este lista antes de la primera sync SNTP */
-    osDelay(5000U);
-
-    /* Inicializar RTC, timers, alarma y primera sync SNTP */
-    init_RTC();
-
     LED_Initialize_stm();
 
+    /* Arrancamos la pila de red */
+    netInitialize();
+
+    /* IMPORTANTE: Inicializamos el hardware del RTC, pero le quitamos 
+       la llamada a init_SNTP() de dentro de la función init_RTC() en tu rtc.c */
+    init_RTC(); 
+
+    /* Creamos los hilos (tu hilo del LCD ya usa colas de mensajes) */
     TID_Led     = osThreadNew(BlinkLed,  NULL, NULL);
     TID_Display = osThreadNew(Display,   NULL, NULL);
     TID_RTC     = osThreadNew(ThreadRTC, NULL, NULL);
+
+    /* Le damos 5 segundos a la red para conseguir IP por DHCP */
+    osDelay(5000U);
+
+    /* AHORA SÍ: Forzamos la primera sincronización SNTP */
+    init_SNTP();
 
     osThreadExit();
 }

@@ -264,6 +264,7 @@ uint32_t netCGI_Script(const char *env, char *buf, uint32_t buflen, uint32_t *pc
             RTC_DateTypeDef sDate = {0};
             char texto[20];
 
+            /* Lectura local y segura para no interferir con otros hilos */
             HAL_RTC_GetTime(&RtcHandle, &sTime, RTC_FORMAT_BIN);
             HAL_RTC_GetDate(&RtcHandle, &sDate, RTC_FORMAT_BIN);
 
@@ -281,27 +282,31 @@ uint32_t netCGI_Script(const char *env, char *buf, uint32_t buflen, uint32_t *pc
             }
         }
         break;
+
     case 'j':
         {
-            HAL_RTC_GetTime(&RtcHandle, &stimestructure, RTC_FORMAT_BIN);
-            HAL_RTC_GetDate(&RtcHandle, &sdatestructure, RTC_FORMAT_BIN);
+            RTC_TimeTypeDef sTime = {0};
+            RTC_DateTypeDef sDate = {0};
+            char texto[20];
+
+            /* Arreglado para comportarse de forma segura usando el offset &env[4] 
+               como espera el motor CGI de Keil, evitando desbordamientos de buffer */
+            HAL_RTC_GetTime(&RtcHandle, &sTime, RTC_FORMAT_BIN);
+            HAL_RTC_GetDate(&RtcHandle, &sDate, RTC_FORMAT_BIN);
 
             if (env[2] == '1') {
-                len = (uint32_t)sprintf(buf, "%02d:%02d:%02d",
-                      stimestructure.Hours,
-                      stimestructure.Minutes,
-                      stimestructure.Seconds);
+                sprintf(texto, "%02d:%02d:%02d", sTime.Hours, sTime.Minutes, sTime.Seconds);
+                len = (uint32_t)sprintf(buf, &env[4], texto);
             } else if (env[2] == '2') {
-                len = (uint32_t)sprintf(buf, "%02d/%02d/20%02d",
-                      sdatestructure.Date,
-                      sdatestructure.Month,
-                      sdatestructure.Year);
+                sprintf(texto, "%02d/%02d/20%02d", sDate.Date, sDate.Month, sDate.Year);
+                len = (uint32_t)sprintf(buf, &env[4], texto);
             }
         }
         break;
 
     case 'x':
         adv = AD_in(0);
+        /* Mantengo &env[1], asegúrate de que tu etiqueta HTML encaja con este offset */
         len = (uint32_t)sprintf(buf, &env[1], adv);
         break;
 
