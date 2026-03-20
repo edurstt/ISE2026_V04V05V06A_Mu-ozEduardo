@@ -1,4 +1,0 @@
-No se inicia en la hora actual, al darle al reset en el rtc.c, sino en el 0.0.0
-
-No se enciende el led rojo y al darle al botón azul de la placa no espera 3 minutos y vuelve. Cuando le das al reset (botón negro que son 3 o 5 segundos) tiene que aparecer una fecha
-concreta e igual el azul. 
